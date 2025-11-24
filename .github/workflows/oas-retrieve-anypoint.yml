@@ -47,7 +47,7 @@ jobs:
 
       # Download OpenAPI spec
       - name: Download OpenAPI Spec from Anypoint Design Center
-        run: anypoint-cli-v4 designcenter:project:download --client_id ${{secrets.ANYPOINT_CONNECTED_APP_ID}} --client_secret ${{secrets.ANYPOINT_CONNECTED_APP_SECRET}} --organization ${{secrets.ANYPOINT_ORG_ID}} pet-owners-api ./docs/oas
+        run: anypoint-cli-v4 designcenter:project:download --client_id ${{secrets.ANYPOINT_CONNECTED_APP_ID}} --client_secret ${{secrets.ANYPOINT_CONNECTED_APP_SECRET}} --organization ${{secrets.ANYPOINT_ORG_ID}} githubsyncanypoint ./docs/oas
       
       # Configure Git for commits
       - name: Initialize mandatory git config
