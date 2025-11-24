@@ -1,0 +1,10 @@
+{
+  "main": "githubsyncanypoint.raml",
+  "name": "githubsyncanypoint",
+  "groupId": "903320a7-54d0-422d-91c4-2a22e76b2cd7",
+  "assetId": "githubsyncanypoint",
+  "version": "1.0.0",
+  "classifier": "raml",
+  "tags": [],
+  "descriptorVersion": "1.0.0"
+}
