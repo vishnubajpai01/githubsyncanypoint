@@ -19,11 +19,11 @@ jobs:
       - name: "Checkout Source Code"
         uses: actions/checkout@v2
       
-      # Install nodejs 16
+      # Install nodejs 22.x
       - name: "Install Node.js"
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 22.x
 
       # Install Anypoint CLI and relevant plugins
       - name: "Install Anypoint CLI"
