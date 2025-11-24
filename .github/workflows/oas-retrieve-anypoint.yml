@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       git_committer_name:
-        description: 'Name to use for the commit'
+        description: 'Name to use for the commit '
         required: true
         default: 'GitHub Actions'
         type: string
