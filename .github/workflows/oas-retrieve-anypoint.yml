@@ -44,6 +44,10 @@ jobs:
       # Create new branch starting with 'oasSync/anypoint-download'
       - name: Create Temporary Branch
         run: git checkout -b ${{ env.branch_name }}
+      
+      # Create OpenAPI output directory
+      - name: Create OpenAPI output directory
+        run: mkdir -p docs/oas
 
       # Download OpenAPI spec
       - name: Download OpenAPI Spec from Anypoint Design Center
