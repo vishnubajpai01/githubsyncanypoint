@@ -13,7 +13,7 @@ jobs:
   deploy-to-anypoint-platform:
     # check if pull request was merged & ignore branches that begin with oasSync/anypoint-download
     # if: ${{ github.event.pull_request.merged == true && !startsWith(github.head_ref, 'oasSync/anypoint-download') }}
-    if: ${{ github.event.pull_request.merged == true}}
+    # if: ${{ github.event.pull_request.merged == true}}
     runs-on: ubuntu-latest
     steps:
       # Checkout the source code
