@@ -5,12 +5,12 @@ on:
       git_committer_name:
         description: 'Name to use for the commit'
         required: true
-        default: 'GitHub Actions'
+        default: 'Vishnu Bajpai'
         type: string
       git_committer_email:
         description: 'Email to use for the commit'
         required: true
-        default: 'noreply@github.com'
+        default: 'vishnu11b@gmail.com'
         type: string
 
 jobs:
