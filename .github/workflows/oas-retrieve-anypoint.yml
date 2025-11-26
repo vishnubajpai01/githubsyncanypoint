@@ -70,7 +70,7 @@ jobs:
       
       # Create new pull request
       - name: Create Pull Request
-        run: echo "pr_number=$(gh pr create -B main -H ${{ env.branch_name }} --title '${{ env.branch_name }} into main' --body 'Created by GitHub Action' | cut -d'/' -f7)" >> $GITHUB_ENV
+        run: echo "pr_number=$(gh pr create -B master -H ${{ env.branch_name }} --title '${{ env.branch_name }} into master' --body 'Created by GitHub Action' | cut -d'/' -f7)" >> $GITHUB_ENV
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       
