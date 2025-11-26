@@ -1,0 +1,36 @@
+#%RAML 1.0
+title: githubsyncanypoint
+mediaType: application/json
+
+/test:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "message": "Hare Krishna"
+              }
+
+/message:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "message": "Vishnu is live"
+              }  
+
+/location:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "message": "Bangalore"
+              }                                 
