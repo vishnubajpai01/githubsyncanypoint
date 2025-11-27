@@ -1,0 +1,81 @@
+
+name: OpenAPI Spec Retrieve from Anypoint
+on:
+  workflow_dispatch:
+    inputs:
+      git_committer_name:
+        description: 'Name to use for the commit'
+        required: true
+        default: 'Vishnu Bajpai'
+        type: string
+      git_committer_email:
+        description: 'Email to use for the commit'
+        required: true
+        default: 'vishnu11b@gmail.com'
+        type: string
+
+jobs:
+  retrieve-from-anypoint-platform:
+    runs-on: ubuntu-latest
+    steps:
+      # Install nodejs 22.x
+      - name: "Install Node.js"
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22.x
+
+      # Install Anypoint CLI and relevant plugins
+      - name: "Install Anypoint CLI"
+        run: | 
+          npm install -g anypoint-cli-v4
+          anypoint-cli-v4 plugins:install anypoint-cli-account-plugin
+          anypoint-cli-v4 plugins:install anypoint-cli-designcenter-plugin
+          anypoint-cli-v4 --version
+          anypoint-cli-v4 plugins --core
+      # Checkout the source code
+      - name: "Checkout Source Code"
+        uses: actions/checkout@v2
+      
+      # Save temporary branch name as environment variable
+      - name: Set Temporary Branch Name
+        id: dateTime
+        run:  echo "branch_name=oasSync/anypoint-download-$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV
+      
+      # Create new branch starting with 'oasSync/anypoint-download'
+      - name: Create Temporary Branch
+        run: git checkout -b ${{ env.branch_name }}
+      
+      # Create OpenAPI output directory
+      - name: Create OpenAPI output directory
+        run: mkdir -p src/main/resources/api
+
+      # Download OpenAPI spec
+      - name: Download OpenAPI Spec from Anypoint Design Center
+        run: anypoint-cli-v4 designcenter:project:download --client_id ${{secrets.ANYPOINT_CONNECTED_APP_ID}} --client_secret ${{secrets.ANYPOINT_CONNECTED_APP_SECRET}} --organization ${{secrets.ANYPOINT_ORG_ID}} githubsyncanypoint ./src/main/resources/api
+      
+      # Configure Git for commits
+      - name: Initialize mandatory git config
+        run: |
+         git config user.name ${{inputs.git_committer_name}}
+         git config user.email ${{inputs.git_committer_email}}
+      
+      # Commit changes and push to origin
+      - name: Commit Changes
+        id: make-commit
+        run: |
+          git add .
+          git commit --message "Adding changes retrieved from Anypoint platform"
+          echo "::set-output name=commit::$(git rev-parse HEAD)"
+          git push origin ${{ env.branch_name }}
+      
+      # Create new pull request
+      - name: Create Pull Request
+        run: echo "pr_number=$(gh pr create -B master -H ${{ env.branch_name }} --title '${{ env.branch_name }} into master' --body 'Created by GitHub Action' | cut -d'/' -f7)" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      
+      # Merge pull request and delete temporary branch
+      - name: Merge Pull Request and Delete Temporary Branch
+        run: gh pr merge ${{env.pr_number}} --rebase --delete-branch
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
