@@ -1,0 +1,39 @@
+name: OpenAPI Spec Deploy
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - master
+    paths:
+      - 'src/main/resources/api/**'
+
+jobs:
+  deploy-to-anypoint-platform:
+    # check if pull request was merged & ignore branches that begin with oasSync/anypoint-download
+    # if: ${{ github.event.pull_request.merged == true && !startsWith(github.head_ref, 'oasSync/anypoint-download') }}
+    # if: ${{ github.event.pull_request.merged == true}}
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the source code
+      - name: "Checkout Source Code"
+        uses: actions/checkout@v2
+      
+      # Install nodejs 22.x
+      - name: "Install Node.js"
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22.x
+
+      # Install Anypoint CLI and relevant plugins
+      - name: "Install Anypoint CLI"
+        run: | 
+          npm install -g anypoint-cli-v4
+          anypoint-cli-v4 plugins:install anypoint-cli-account-plugin
+          anypoint-cli-v4 plugins:install anypoint-cli-designcenter-plugin
+          anypoint-cli-v4 --version
+          anypoint-cli-v4 plugins --core
+      # Upload OpenAPI spec
+      - name: Upload OpenAPI Spec to Anypoint Design Center
+        run: anypoint-cli-v4 designcenter:project:upload --client_id ${{secrets.ANYPOINT_CONNECTED_APP_ID}} --client_secret ${{secrets.ANYPOINT_CONNECTED_APP_SECRET}} --organization ${{secrets.ANYPOINT_ORG_ID}} githubsyncanypoint ./src/main/resources/api
