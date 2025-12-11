@@ -18,11 +18,11 @@ jobs:
     steps:
       # Checkout the source code
       - name: "Checkout Source Code"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       
       # Install nodejs 22.x
       - name: "Install Node.js"
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 22.x
 
