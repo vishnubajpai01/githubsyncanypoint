@@ -5,6 +5,7 @@ on:
     types:
       - closed
     branches:
+      - master
       - feature/test-sync-1
     paths:
       - 'src/main/resources/api/**'
